@@ -2,16 +2,26 @@
 
 	$gender="";
 	$err_gender="";
-	$hobbies="";
-	$err_hobbies="";
-	$profession="";
-	$err_profession="";
 	$name="";
 	$err_name="";
+	$username="";
+	$err_username="";
+	$phone="";
+	$err_phone="";
 
+	$email="";
+	$err_email="";
+	$address="";
+	$err_address="";
+	
+    $birthdate="";
+	$err_birthdate="";
+	
 	$has_error = false;
+	
 
-	if(isset($_POST["register"])){
+	
+if(isset($_POST["register"])){
 		if(empty($_POST["name"])){
 			$err_name="Name Required";
 			$has_error = true;
@@ -22,37 +32,39 @@
 		else{
 			$name=htmlspecialchars($_POST["name"]);
 		}
-		if(!isset($_POST["gender"])){
-			$err_gender="Gender Required";
+				
+		if(strlen($_POST["password"])){
+			$err_password="8 char Required";
+			$has_error = true;
+		}elseif(ctype_upper($_POST["password"],"ABCD")){
+			$err_password= "uppercase";
 			$has_error = true;
 		}
-		else{
-			$gender = $_POST["gender"];
-		}
-		if(!isset($_POST["hobbies"])){
-			$err_hobbies = "Atleast select 1 hobby";
+		
+		elseif(ctype_lower($_POST["password"],"abcd")){
+			$err_password= "lowercase";
 			$has_error = true;
-		}
+		
 		else{
-			$hobbies=$_POST["hobbies"];
+			$name=htmlspecialchars($_POST["password"] "#","1");
 		}
-
-		if(!$has_error){
-			echo $name;
+		if(is_numeric($_POST["phone"])){
+			$err_phone="numerice value";
+			$has_error=true;
 		}
-	}
-
+		if(htmlspecialchars($_POST["email"])){
+			$err_email=contain @ and one .;
+			$has_error=true;
+		}
+		
+				
 ?>
+
 <html>
 	<head>
 		<title>Club Member Registration</title>
 	</head>
 	<body>
-	
-	
-		
-		
-			
 						
 		<form action="" method="post">
 			<fieldset>
@@ -62,113 +74,107 @@
 				<table>
 					<tr>
 						<td>Name:</td>
-						<td><input type="text" name="name"> <?php echo $err_name;?></td>
+						<td><input type="text" name="name"> <?php echo $err_name;?> </td>
 					</tr>
 					<tr>
 						<td>Username:</td>
-						<td><input type="text"></td>
+						<td><input type="text" <?php echo $err_username;?>"name"> </td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td><input type="text"></td>
+						<td><input type="text"><?php echo $_email;?> </td>
 					</tr>
 					<tr>
-						<td>Phone:</td>
+					
+						<td>Phone: </td>
 						
-						<td>
+
+						<td><input type="text" <?php echo $_phone;?>"name"> </td>
+						
+			<td>
 					<select>
 					<option>Code</option>
 					</select>
-					</td>
-					<td>
+					
+					
 					<select>
 					<option>Number</option>
 					</select>
+					
 					</td>
 					</tr>
 					
+				
+					<tr>
 					
 					<td> Address</td>
-					
-					
-					
 					<td>
 					<select>
 					<option>Stress Address</option>
 					</select>
-					</td>
-					<td>
+					
+					
 					<select>
 					<option>City</option>
 					</select>
-					</td>
-					<td>
+					
+					
 					<select>
 					<option> State</option>
 					</select>
-					</td>
 					
-					<td>
+					
+					
 					<select>
 					<option>Postal/Zip Code</option>
 					</select>
 					</td>
+					</tr>
 					
-					
-					
-				
-				
-					
-				
 				
 					<tr>
 						<td>Password:</td>
-						<td><input type="password" name="password"></td>
+						<td><input type="password" name="password"><?php echo $_password;?> </td>
 					</tr>
 					<tr></tr>
 					<tr>
 						<td> Confirm Password:</td>
 						<td><input type="password" name="password"></td>
 					</tr>
-				
-				
-					<td>Birth Date:</td>
-				
 		
-				<tr>
-				<?php
-				for($i=0;Si<10;$i++){
-					echo"<option>1</option>";
-				}
-				?>
+				<td>Birth Date:</td>
+				
+				
+				<td>
 					
-					
-					
-					
-					<td>
+			
 					<select>
 					<option> Day</option>
->
+					<?phpfor($i=0;$i<10;$i++){
+						echo"<option>1</option>";
+					}
+					?>
+
 					
 					</select>
-					</td>
-					<td>
+					
+					
 					<select>
 					<option> Month</option>
->
+
 					
 					</select>
-					</td>
-					<td>
+					
+				
 					<select>
 					<option> Year</option>
->
 					
 					</select>
 					</td>
-				</tr>
-					
-						<td>Gender: <?php echo $err_gender;?></td>
+				
+				
+					<tr>
+						<td>Gender</td>
 						<td>
 							<input type="radio" name="gender" value="Male"> Male
 							<input type="radio" name="gender" value="Female"> Female
@@ -176,23 +182,28 @@
 					</tr>
 					
 					<center>
-<tr>				
+			
 				<td><h4> Where did you hear about us?</h4></td>
-				<tr>
+				
+			
 				<td>
-				<input type="checkbox" name="Gender">Google<br>
+				
+				
+				<input type="checkbox" name="Gender[]" value="A friend or Colleague"> A friend or Colleague<br>
 						
-						<input type="checkbox" name="Gender"> Blog Post<br>
+				<input type="checkbox" name="Gender[]" value="Google">Google <br>
 						
-						<input type="checkbox" name="Gender"> New Article<br>
+				<input type="checkbox" name="Gender[]" value=" Blog Post">Blog Post <br>
+						
+				<input type="checkbox" name="Gender[]" value="Article">Article <br>
 						</tr>
 				</center>
 				</td>
-				</tr>
+				
 					<tr>
 						<td>Bio:</td>
 						<td>
-							<textarea name="io" ></textarea>
+							<textarea name="bio" ></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -201,6 +212,5 @@
 				</table>
 			</fieldset>
 		</form>
-	</body>
-
-</html> 
+		</body>
+		</html>
